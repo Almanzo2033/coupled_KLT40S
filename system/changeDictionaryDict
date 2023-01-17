@@ -1,0 +1,50 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  9
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    object      changeDictionaryDict;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+boundary
+{
+   cladTopBot
+   {
+      type         wall;
+      physicalType wall;
+   }
+   fuelTopBot
+   {
+      type         wall;
+      physicalType wall;
+   }
+   flowSym
+   {
+      type         symmetry;
+      physicalType symmetry;
+   }
+   cladSym
+   {
+      type         symmetry;
+      physicalType symmetry;
+   }
+   fuelSym
+   {
+      type         symmetry;
+      physicalType symmetry;
+   }
+};
+
+"clad/T"
+{
+   internalField uniform $Tclad;
+};
+// ************************************************************************* //

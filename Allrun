@@ -1,0 +1,49 @@
+#!/bin/sh
+cd ${0%/*} || exit 1    # Run from this directory
+
+# Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+#./Allclean
+#./Allmesh
+
+rm log.*
+rm -r 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 5.5 6
+rm -r processor*
+
+foamSetupCHT
+
+rm constant/clad/fvModels
+rm log.changeDictionary
+
+changeDictionary
+
+#cp ../couplingSteps/volpowerfuel ./0/fuel/volpowerfuel
+
+decomposePar -allRegions -dict system/decomposeParDict
+
+cp ./processor0/0/fuel/volpowerfuel ./processor0/constant/fuel/volpowerfuel
+cp ./processor1/0/fuel/volpowerfuel ./processor1/constant/fuel/volpowerfuel
+cp ./processor2/0/fuel/volpowerfuel ./processor2/constant/fuel/volpowerfuel
+cp ./processor3/0/fuel/volpowerfuel ./processor3/constant/fuel/volpowerfuel
+cp ./processor4/0/fuel/volpowerfuel ./processor4/constant/fuel/volpowerfuel
+cp ./processor5/0/fuel/volpowerfuel ./processor5/constant/fuel/volpowerfuel
+cp ./processor6/0/fuel/volpowerfuel ./processor6/constant/fuel/volpowerfuel
+cp ./processor7/0/fuel/volpowerfuel ./processor7/constant/fuel/volpowerfuel
+cp ./processor8/0/fuel/volpowerfuel ./processor8/constant/fuel/volpowerfuel
+cp ./processor9/0/fuel/volpowerfuel ./processor9/constant/fuel/volpowerfuel
+cp ./processor10/0/fuel/volpowerfuel ./processor10/constant/fuel/volpowerfuel
+cp ./processor11/0/fuel/volpowerfuel ./processor11/constant/fuel/volpowerfuel
+
+#printf "\n%s\n" "Creating files for paraview post-processing"
+#paraFoam -touchAll
+#echo
+
+runParallel $(getApplication)
+
+reconstructPar -allRegions
+
+foamToVTK -latestTime -region fuel
+foamToVTK -latestTime -region clad
+foamToVTK -latestTime -region flow
+#------------------------------------------------------------------------------

@@ -1,0 +1,57 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  9
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    object      thermophysicalProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+thermoType
+{
+    type            heSolidThermo;
+    mixture         pureMixture;
+//    transport       constIso;
+	transport       polynomial;
+//    thermo          eConst;
+	thermo          ePolynomial;
+    equationOfState rhoConst;
+    specie          specie;
+    energy          sensibleInternalEnergy;
+}
+//clad zircaloy
+mixture
+{
+    specie
+    {
+        nMoles      1;
+        molWeight   91.48743;   // [g/mol]
+    }
+//coba dibuat konstan
+    transport
+    {
+//        kappa      19;
+        kappaCoeffs<8> (7.51 0.0209 -0.0000145 0.00000000767 0 0 0 0 );        // [W/m/K]
+    }
+
+    thermodynamics
+    {
+        Hf      0;
+//        Cv      310;
+		Sf 		0;
+        CvCoeffs<8> ( 164.28258 0.5581123 -0.0006504 0.0000003 0 0 0 0 );        // [J/kg/K]
+    }
+
+    equationOfState
+    {
+        rho     6560;       // [kg/m^3]
+    }
+}
+
+// ************************************************************************* //

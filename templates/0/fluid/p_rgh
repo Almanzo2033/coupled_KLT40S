@@ -1,0 +1,52 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  9
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       volScalarField;
+    object      p_rgh;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#include "$FOAM_CASE/constant/initialConditions"
+
+dimensions      [ 1 -1 -2 0 0 0 0 ];
+
+internalField   uniform 12.7e6;
+
+boundaryField
+{
+    outlet
+    {
+        type            fixedMean;
+        meanValue       12.7e6;
+        value           $internalField;
+    }
+
+    inlet
+    {
+        type            fixedFluxPressure;
+        value           $internalField;
+    }
+
+    flowSym
+    {
+        type            symmetry;
+    }
+    
+    flow_to_clad
+    {
+        type            fixedFluxPressure;
+        value           $internalField;
+    }
+
+    #includeEtc "caseDicts/setConstraintTypes"
+}
+
+
+// ************************************************************************* //
